@@ -32,8 +32,7 @@
       1
     ],
     "extracted_labels": [
-      "def:7.2",
-      "eq:7.u2"
+      "def:7.2.1"
     ],
     "context": {
       "chapter": "Valid Inequalities for Structured Integer Programs",
@@ -56,7 +55,9 @@
       2,
       2
     ],
-    "extracted_labels": [],
+    "extracted_labels": [
+      "def:7.2.2"
+    ],
     "context": {
       "chapter": "Valid Inequalities for Structured Integer Programs",
       "section": "Cover Inequalities for the 0,1 Knapsack Problem",
@@ -78,7 +79,9 @@
       2,
       3
     ],
-    "extracted_labels": [],
+    "extracted_labels": [
+      "def:7.2.3"
+    ],
     "context": {
       "chapter": "Valid Inequalities for Structured Integer Programs",
       "section": "Cover Inequalities for the 0,1 Knapsack Problem",
@@ -91,6 +94,28 @@
     "dependencies": [],
     "proof": "",
     "index": 4
+  },
+  {
+    "label": "Proposition 7.0.1",
+    "env": "prop",
+    "number_components": [
+      7,
+      0,
+      1
+    ],
+    "extracted_labels": [],
+    "context": {
+      "chapter": "Valid Inequalities for Structured Integer Programs",
+      "section": "Cover Inequalities for the 0,1 Knapsack Problem",
+      "subsection": "",
+      "chapter_number": 7,
+      "section_number": "1",
+      "subsection_number": "0"
+    },
+    "content": "\\begin{proposition}\n\\label{prop:7.0.1}\nFor any cover $C$, the associated \\emph{cover inequality} is valid for $\\operatorname{conv}(K)$.\n\\end{proposition}",
+    "dependencies": [],
+    "proof": "",
+    "index": 5
   },
   {
     "label": "Proposition 7.1",
@@ -170,7 +195,7 @@
       "section_number": 1,
       "subsection_number": 0
     },
-    "content": "\\begin{definition}\n\\label{def:7.4}\n[Separation problem for cover inequalities]\\nLet $K:=\\{x\\in\\{0,1\\}^n: \\sum_{j=1}^n a_j x_j\\le b\\}$, and let $\\bar x\\in[0,1]^n$. The separation problem for cover inequalities for $K$ is\\n\\[\n\\label{eq:7.u13}\n\\n\\zeta \\,=\\, \\min\\left\\{\\sum_{j\\in C}(1-\\bar x_j):\\; C\\subseteq\\{1,\\dots,n\\}\\text{ is a cover for }K\\right\\}.\\n\n\\]\\n\\end{definition}",
+    "content": "\\begin{definition}\n\\label{def:7.4}\n[Separation problem for cover inequalities] Let $K:=\\{x\\in\\{0,1\\}^n: \\sum_{j=1}^n a_j x_j\\le b\\}$, and let $\\bar x\\in[0,1]^n$. The separation problem for cover inequalities for $K$ is\n\\[\n\\label{eq:7.u13}\n\\zeta \\,=\\, \\min\\left\\{\\sum_{j\\in C}(1-\\bar x_j):\\; C\\subseteq\\{1,\\dots,n\\}\\text{ is a cover for }K\\right\\}.\n\\]\n\\end{definition}",
     "dependencies": [],
     "proof": "",
     "index": 7
@@ -222,7 +247,7 @@
       "section_number": 1,
       "subsection_number": 0
     },
-    "content": "\\begin{definition}\n\\label{def:7.5}\n[0--1 integer programming formulation of cover separation]\\nAssume $a_1,\\dots,a_n$ and $b$ are integers, and let $\\bar x\\in[0,1]^n$. The separation problem for cover inequalities can be formulated as the integer program\\n\\begin{align*}\n\\label{eq:7.u18}\\n\\zeta &= \\min \\sum_{j=1}^n (1-\\bar x_j) z_j\\\\\\n\\text{s.t. }\\; &\\sum_{j=1}^n a_j z_j \\ge b+1,\\\\\\n& z\\in\\{0,1\\}^n.\\n\\end{align*}\\n\\end{definition}",
+    "content": "\\begin{definition}\n\\label{def:7.5}\n[0--1 integer programming formulation of cover separation] Assume $a_1,\\dots,a_n$ and $b$ are integers, and let $\\bar x\\in[0,1]^n$. The separation problem for cover inequalities can be formulated as the integer program\n\\begin{align*}\n\\label{eq:7.u18}\n\\zeta = \\min &\\sum_{j=1}^n (1-\\bar x_j) z_j\\\\\\text{s.t. } &\\sum_{j=1}^n a_j z_j \\ge b+1,\\\\& z\\in\\{0,1\\}^n.\n\\end{align*}\n\\end{definition}",
     "dependencies": [],
     "proof": "",
     "index": 9
@@ -246,7 +271,7 @@
       "section_number": 1,
       "subsection_number": 0
     },
-    "content": "\\begin{algorithm}\n\\label{alg:7.1}\n[Heuristic for detecting a violated cover inequality]\\n\\textbf{Input:} Integers $a_1,\\dots,a_n$, $b$, and a point $\\bar x\\in[0,1]^n$.\\\\\\n\\textbf{Step 1.} Solve the linear programming relaxation of\\n\\begin{align*}\n\\label{eq:7.u19}\\n\\min\\; &\\sum_{j=1}^n (1-\\bar x_j) z_j\\\\\\n\\text{s.t. }\\; &\\sum_{j=1}^n a_j z_j \\ge b+1,\\\\\\n& 0\\le z\\le 1,\\n\\end{align*}\\nand obtain a basic optimal solution $z^*$.\\\\\\n\\textbf{Step 2.} If the optimal objective value is $\\ge 1$, return \\emph{No violated cover inequality detected}.\\\\\\n\\textbf{Step 3.} Otherwise, output the set $C:=\\{j\\in\\{1,\\dots,n\\}: z_j^*>0\\}$.\\n\\end{algorithm}",
+    "content": "\\begin{algorithm}\n\\label{alg:7.1}\n[Heuristic for detecting a violated cover inequality] \\textbf{Input:} Integers $a_1,\\dots,a_n$, $b$, and a point $\\bar x\\in[0,1]^n$. \\\\\n\\textbf{Step 1.} Solve the linear programming relaxation of\n\\begin{align*}\n\\label{eq:7.u19}\n\\min\\; &\\sum_{j=1}^n (1-\\bar x_j) z_j\\\\\n\\text{s.t. }\\; &\\sum_{j=1}^n a_j z_j \\ge b+1,\\\\\n& 0\\le z\\le 1,\n\\end{align*}\nand obtain a basic optimal solution $z^*$.\\\\\n\\textbf{Step 2.} If the optimal objective value is $\\ge 1$, return \\emph{No violated cover inequality detected}.\\\\\n\\textbf{Step 3.} Otherwise, output the set $C:=\\{j\\in\\{1,\\dots,n\\}: z_j^*>0\\}$.\n\\end{algorithm}",
     "dependencies": [],
     "proof": "",
     "index": 10

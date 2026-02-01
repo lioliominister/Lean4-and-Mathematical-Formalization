@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>JSON + LaTeX 智能标注工具</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="title">
+        <h1>JSON 智能标注工具</h1>
+        <p>支持自动编号、依赖分析与 Markdown/LaTeX 预览</p>
+      </div>
+      <div class="toolbar">
+        <label class="path">
+          <span>文件路径</span>
+          <input id="file-path" type="text" value="chunk/clean_slim_only/part1.json" />
+        </label>
+        <label class="path">
+          <span>本地 JSON</span>
+          <input id="file-picker" type="file" accept="application/json" />
+        </label>
+        <div class="buttons">
+          <button id="load-file">加载</button>
+          <button id="save-file">导出 JSON</button>
+          <button id="new-file" class="ghost">新建</button>
+        </div>
+      </div>
+    </header>
+
+    <main class="layout">
+      <section class="panel list">
+        <div class="panel-header">
+          <h2>条目列表</h2>
+          <div class="panel-actions">
+            <button id="insert-entry" class="ghost" title="在当前选中条目后插入">插入</button>
+            <button id="add-entry" title="在列表末尾新增">新增</button>
+          </div>
+        </div>
+        
+        <div class="panel-tools">
+          <button id="auto-renumber" class="ghost small" title="自动重新编号所有条目">自动编号</button>
+          <button id="open-batch-modal" class="ghost small">批量 Context</button>
+          <div class="divider"></div>
+          <button id="btn-append-deps" class="ghost small" title="将 dependencies 文本追加到 content 末尾">追加依赖</button>
+          <button id="btn-undo-deps" class="ghost small" title="撤销追加的依赖文本">撤销追加</button>
+        </div>
+
+        <div id="entry-list" class="entry-list"></div>
+        <div class="panel-footer">
+          <button id="move-up" class="ghost">上移</button>
+          <button id="move-down" class="ghost">下移</button>
+          <button id="delete-entry" class="danger">删除</button>
+        </div>
+      </section>
+
+      <section class="panel editor">
+        <div class="panel-header">
+          <h2>条目编辑</h2>
+          <div id="status" class="status">未加载</div>
+        </div>
+        <div id="editor-form" class="form"></div>
+        <details class="raw">
+          <summary>原始 JSON</summary>
+          <textarea id="raw-json" spellcheck="false"></textarea>
+          <div class="raw-actions">
+            <button id="apply-raw">应用 JSON</button>
+            <button id="format-raw" class="ghost">格式化</button>
+          </div>
+        </details>
+      </section>
+
+      <section class="panel preview">
+        <div class="panel-header">
+          <h2>预览 (Markdown + LaTeX)</h2>
+          <div class="panel-actions">
+             <button id="open-macro-modal" class="ghost small">自定义宏</button>
+             <button id="scan-refs" class="ghost small">扫描引用</button>
+          </div>
+        </div>
+        <div id="preview-meta" class="meta"></div>
+        <div id="preview" class="preview-body markdown-body"></div>
+      </section>
+    </main>
+
+    <div id="batch-modal" class="modal hidden">
+      <div class="modal-content">
+        <h3>批量修改 Context</h3>
+        <div class="form">
+          <div class="field-row">
+            <label class="field">
+              <span>开始索引 (包含)</span>
+              <input id="batch-start" type="number" min="1" />
+            </label>
+            <label class="field">
+              <span>结束索引 (包含)</span>
+              <input id="batch-end" type="number" min="1" />
+            </label>
+          </div>
+          <fieldset class="field">
+            <legend>Context 内容 (留空则不修改)</legend>
+            <div class="field-row">
+              <div class="field">
+                <span>chapter</span>
+                <input id="batch-chapter" type="text" />
+              </div>
+              <div class="field">
+                <span>Chap Num</span>
+                <input id="batch-chapter-number" type="number" />
+              </div>
+            </div>
+            <div class="field-row">
+              <div class="field">
+                <span>section</span>
+                <input id="batch-section" type="text" />
+              </div>
+              <div class="field">
+                <span>Sec Num</span>
+                <input id="batch-section-number" type="text" />
+              </div>
+            </div>
+            <div class="field-row">
+              <div class="field">
+                <span>subsection</span>
+                <input id="batch-subsection" type="text" />
+              </div>
+              <div class="field">
+                <span>Subsec Num</span>
+                <input id="batch-subsection-number" type="text" />
+              </div>
+            </div>
+          </fieldset>
+        </div>
+        <div class="modal-actions">
+          <button id="batch-apply">应用修改</button>
+          <button id="batch-cancel" class="ghost">取消</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="macro-modal" class="modal hidden">
+      <div class="modal-content">
+        <h3>自定义 LaTeX 宏 (Preamble)</h3>
+        <p style="font-size:12px; color:#666;">在此输入 \newcommand 等定义，预览时将自动加载。</p>
+        <div class="form">
+           <textarea id="macro-input" style="min-height: 200px; font-family: monospace;" placeholder="\newcommand{\R}{\mathbb{R}}"></textarea>
+        </div>
+        <div class="modal-actions">
+          <button id="macro-save">保存并刷新</button>
+          <button id="macro-cancel" class="ghost">关闭</button>
+        </div>
+      </div>
+    </div>
+
+    <footer class="footer tex2jax_ignore">
+      <p>
+        提示：内容会自动去除 <code>\begin{...}</code> 和 <code>\end{...}</code> 并转为 Markdown 渲染。
+      </p>
+    </footer>
+
+    <script>
+      window.MathJax = {
+        tex: {
+          inlineMath: [["\\(", "\\)"], ["$", "$"]],
+          displayMath: [["\\[", "\\]"], ["$$", "$$"]],
+          processEscapes: true,
+          packages: { "[+]": ["ams", "newcommand", "autoload"] },
+        },
+        options: {
+          ignoreHtmlClass: 'tex2jax_ignore',
+          processHtmlClass: 'tex2jax_process'
+        },
+      };
+    </script>
+    <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+
+    <script src="app.js"></script>
+  </body>
+</html>

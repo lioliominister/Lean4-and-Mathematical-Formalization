@@ -1680,29 +1680,6 @@
     "index": 62
   },
   {
-    "label": "Definition 7.30",
-    "env": "def",
-    "number_components": [
-      7,
-      30
-    ],
-    "extracted_labels": [
-      "def:7.30"
-    ],
-    "context": {
-      "chapter": "Valid Inequalities for Structured Integer Programs",
-      "section": "Equivalence Between Optimization and Separation",
-      "subsection": "",
-      "chapter_number": 7,
-      "section_number": 5,
-      "subsection_number": 0
-    },
-    "content": "\\begin{definition}\n\\label{def:7.30}\n[Separation problem for a polyhedron]\nGiven a polyhedron $P\\subseteq\\mathbb{R}^n$ and a point $\\bar x\\in\\mathbb{R}^n$, the \\emph{separation problem} is to either\n\\begin{enumerate}\n\\item certify that $\\bar x\\in P$, or\n\\item find a valid inequality $\\alpha x\\le \\alpha_0$ for $P$ such that $\\alpha \\bar x>\\alpha_0$.\n\\end{enumerate}\n\\end{definition}",
-    "dependencies": [],
-    "proof": "",
-    "index": 63
-  },
-  {
     "label": "Theorem 7.10",
     "env": "thm",
     "number_components": [

@@ -8,10 +8,6 @@ variable {C : Set H}
 def is_proj (C : Set H) (x x' : H) : Prop := 
   x' ∈ C ∧ ‖x - x'‖ = ⨅ (w : ↑C), ‖x - ↑w‖
 
-
-
-
-
 lemma proj_opt_cond (conv_c : Convex ℝ C) (close_c : IsClosed C) 
     {x x' : H} (h_proj : is_proj C x x') :
     ∀ w ∈ C, inner ℝ (x - x') (w - x') ≤ 0 := by
